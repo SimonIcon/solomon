@@ -11,42 +11,50 @@ const productCategory = [
     {
         id: 200,
         name: "doors",
-        productImage: door
+        productImage: door,
+        value: "door",
     },
     {
         id: 201,
         name: "windows",
         productImage: window,
+        value: "window"
     },
     {
         id: 202,
-        name: "stairs",
+        name: "staircases",
         productImage: stairs,
+        value: "staircase"
     },
     {
         id: 203,
         name: "facades",
         productImage: facades,
+        value: "facades"
     },
     {
         id: 204,
         name: "signages",
         productImage: signages,
+        value: "signages"
     },
     {
         id: 205,
         name: "laser cut panels",
         productImage: laserCut,
+        value: "laserCut"
     },
     {
         id: 206,
         name: "balconies",
         productImage: balcony,
+        value: "balcony"
     },
     {
         id: 207,
         name: "fences",
         productImage: fences,
+        value: "fence"
     }
 
 ]

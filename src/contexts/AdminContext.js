@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
 import React, { createContext, useEffect, useState } from 'react'
 import { db } from '../config/firebase'
 import { toast } from 'react-hot-toast'
@@ -30,14 +30,14 @@ const AdminContext = ({ children }) => {
             await getDocs(collection(db, "products")).then((querySnapshot) => {
                 if (!querySnapshot.empty) {
                     const fetchedProducts = []
-                    querySnapshot.forEach((book) => {
-                        fetchedProducts.push({ id: book.id, ...book.data() })
+                    querySnapshot.forEach((product) => {
+                        fetchedProducts.push({ id: product.id, ...product.data() })
                     })
                     setProducts(fetchedProducts)
                 }
 
             }).catch((error) => {
-                toast.error("error while fetching books")
+                toast.error("error while fetching products")
                 console.log(error)
             })
 
@@ -54,9 +54,27 @@ const AdminContext = ({ children }) => {
             toast.error("error occurred while deleting product")
         })
     }
+    // getting products for given category
+    const [filteredProducts, setFilteredProducts] = useState([])
+    const [activeCategory, setActiveCategory] = useState('')
+    useEffect(() => {
+        const getFilteredProducts = async () => {
+            const products = query(collection(db, "products"), where("category", "==", activeCategory));
+            const querySnapshot = await getDocs(products);
+            const result = [];
+            querySnapshot.forEach((product) => {
+                result.push({ id: product.id, ...product.data() })
+
+            });
+            setFilteredProducts(result)
+        }
+        getFilteredProducts()
+    }, [activeCategory])
 
     return (
-        <adminContext.Provider value={{ handleAddProduct, products, handleDelete }}>
+        <adminContext.Provider value={{
+            handleAddProduct, products, handleDelete, setActiveCategory, filteredProducts
+        }}>
             {children}
         </adminContext.Provider>
     )
