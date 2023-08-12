@@ -44,7 +44,7 @@ const AdminContext = ({ children }) => {
 
         }
         getProducts()
-    }, [])
+    }, [products])
 
     return (
         <adminContext.Provider value={{ handleAddProduct, products }}>
