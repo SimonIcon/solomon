@@ -24,7 +24,6 @@ const AdminContext = ({ children }) => {
         })
     }
     // getting products
-    // getting books from database
     const [products, setProducts] = useState([])
     useEffect(() => {
         const getProducts = async () => {
@@ -46,9 +45,9 @@ const AdminContext = ({ children }) => {
         }
         getProducts()
     }, [])
-    console.log(products)
+
     return (
-        <adminContext.Provider value={{ handleAddProduct }}>
+        <adminContext.Provider value={{ handleAddProduct, products }}>
             {children}
         </adminContext.Provider>
     )

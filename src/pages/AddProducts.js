@@ -1,40 +1,19 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import styles from "../styles/general.module.scss"
 import { useFormik } from "formik"
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
-import { storage } from "../config/firebase"
+import { storage, db } from "../config/firebase"
 import { Toaster, toast } from "react-hot-toast"
-import { adminContext } from '../contexts/AdminContext'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const AddProducts = () => {
     // handling image upload
     const [progress, setProgress] = useState(0)
-    const [productImg, setProductimg] = useState('')
-    const { handleAddProduct } = useContext(adminContext)
+    const [image, setImage] = useState(null);
 
-
-    const handleImageChange = (e) => {
-        const img = e.target.files[0].name
-        if (img.length !== "") {
-            // creating storage ref
-            const fileName = `${Date.now()}-${img}`;
-            const storageRef = ref(storage, `products/${fileName}`);
-            const uploadTask = uploadBytesResumable(storageRef, img);
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    setProgress(uploadProgress)
-                },
-                (error) => {
-                    toast.error("error while ulpoading product image")
-                },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        toast.success("image uploaded")
-                        setProductimg(downloadURL)
-                    });
-                }
-            );
+    const handleChange = (e) => {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
         }
     };
 
@@ -60,21 +39,48 @@ const AddProducts = () => {
                 error.description = toast.error("too short description")
             } else if (values.category === "" || !values.category) {
                 error.category = toast.error("product category required")
-            } else if (productImg.length === 0) {
-                error.productImg = toast.error("product image required")
+            } else if (image.length === 0) {
+                error.image = toast.error("product image required")
             }
             return error;
         },
         onSubmit: async (values, { resetForm }) => {
-            // Assuming handleAddProduct returns a promise
-            try {
-                await handleAddProduct(values.title, values.description, values.category, productImg);
-                toast.success("Product added successfully");
-                setProductimg("")
-                resetForm();
-            } catch (error) {
-                toast.error("An error occurred while adding the product");
-            }
+            //uploadation of image in storage
+            const filename = `${Date.now()}-${image.name}`
+            const storageRef = ref(storage, `products/${filename}`);
+            const uploadTask = uploadBytesResumable(storageRef, image);
+            uploadTask.on('state_changed', (snapshot) => {
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                setProgress(progress)
+            },
+                (error) => {
+                    toast.error("error while uploading image")
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        const timestamp = serverTimestamp()
+                        const productRef = collection(db, "products")
+                        addDoc(productRef, {
+                            uploadedOn: timestamp,
+                            title: values.title,
+                            description: values.description,
+                            category: values.category,
+                            productImage: downloadURL
+                        }).then(() => {
+                            toast.success("product added successfully")
+                            setTimeout(() => {
+                                setProgress(0)
+                                resetForm()
+                            }, 1500);
+                        }).catch(() => {
+                            toast.error("error while adding product")
+                            resetForm()
+                            setImage(null)
+                        })
+
+                    });
+                }
+            );
         }
 
     })
@@ -87,16 +93,16 @@ const AddProducts = () => {
                     <h4 className='capitalize text-center font-semibold text-sm font-Poppins'>add product</h4>
                     <form onSubmit={formik.handleSubmit}
                         className='flex flex-col justify-center items-center'>
-                        <div className='w-full flex flex-row  mt-4 mb-4'>
+                        <div className='w-full flex flex-col justify-center items-center  mt-4 mb-4'>
                             <label htmlFor='file'
                                 className='text-center text-sm w-full capitalize font-semibold font-Poppins'
                             >upload file</label>
-                            <input type='file' onChange={handleImageChange} id="file"
+                            <input type='file' onChange={handleChange} id="file"
                                 className='hidden'
                             />
                             <p>
                                 {
-                                    progress > 0 && progress < 100 ? (
+                                    progress > 0 ? (
                                         <h6 className='font-semibold text-sm capitalize'>uploading {progress}%</h6>
                                     ) : null
                                 }

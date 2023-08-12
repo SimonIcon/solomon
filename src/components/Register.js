@@ -39,10 +39,11 @@ const Register = () => {
             }
             return error
         },
-        onSubmit: async (values) => {
+        onSubmit: async (values, { resetForm }) => {
             RegisterUser(values.email, values.password, values.username, values.phone)
             setTimeout(() => {
                 navigate('/auth/')
+                resetForm()
             }, 1000);
 
 
@@ -52,7 +53,6 @@ const Register = () => {
     return (
         <div className='w-full h-full flex flex-col justify-evenly items-center'>
             <Toaster position='top-right' reverseOrder={false}></Toaster>
-            <Typography variant='h6' className="capitalize font-semibold text-sm text-center">sign up</Typography>
             <form onSubmit={formik.handleSubmit} className='w-full flex flex-col items-center'>
                 <input type='text' placeholder='username' id="username"
                     className='w-[85%] outline-none py-3 mt-4 px-4 lowercase bg-gray-200 rounded-md font-semibold text-sm'

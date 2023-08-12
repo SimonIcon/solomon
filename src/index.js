@@ -13,6 +13,7 @@ import Register from "./components/Register";
 import RecoverPassword from "./components/RecoverPassword";
 import ProductsPage from "./pages/ProductsPage";
 import AddProducts from "./pages/AddProducts";
+import ProductInfoPage from "./pages/ProductInfoPage";
 
 
 const router = createBrowserRouter([
@@ -47,9 +48,14 @@ const router = createBrowserRouter([
             {
                 path: "/products",
                 element: <ProductsPage />
-            }, {
+            },
+            {
                 path: "/addProducts",
                 element: <AddProducts />
+            },
+            {
+                path: "/productInfo",
+                element: <ProductInfoPage />
             }
         ],
     },

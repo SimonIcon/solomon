@@ -32,12 +32,13 @@ const Login = () => {
             }
             return error
         },
-        onSubmit: async (values) => {
+        onSubmit: async (values, { resetForm }) => {
             handleSignIn(values.email, values.password)
             if (isLogged === true) {
                 toast.success(`welcome ${activeMember.name}`)
                 setTimeout(() => {
                     navigate('/')
+                    resetForm()
                 }, 1500);
             }
         }
@@ -46,7 +47,6 @@ const Login = () => {
     return (
         <div className='w-full h-full flex flex-col justify-evenly items-center'>
             <Toaster position='top-right' reverseOrder={false}></Toaster>
-            <Typography variant='h6' className="capitalize font-semibold text-sm text-center">sign in</Typography>
             <form className='w-full flex flex-col justify-center items-center' onSubmit={formik.handleSubmit}>
                 <input type='text' placeholder='your email' id="email"
                     className='w-[85%] outline-none py-3 mt-4 px-4 lowercase bg-gray-200 rounded-md font-semibold text-sm'

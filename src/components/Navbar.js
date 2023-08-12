@@ -22,9 +22,13 @@ const Navbar = () => {
                 {
                     activeMember.isAdmin === true && isLogged === true ? (
                         // admin functionality
-                        <div className='w-[70%] sm:w-[35%] flex flex-row  justify-center items-center'>
+                        <div className='w-[70%] sm:w-[35%] flex flex-row  justify-evenly items-center'>
+                            <h4 onClick={() => navigate("/productInfo")}
+                                className='capitalize font-semibold text-xs tracking-normal
+                                 hover:text-pink-500 hover:cursor-pointer'>product managment</h4>
                             <h4 onClick={() => navigate("/addProducts")}
-                                className='capitalize font-semibold text-xs tracking-normal hover:text-pink-500 hover:cursor-pointer'>add products</h4>
+                                className='capitalize font-semibold text-xs tracking-normal
+                                 hover:text-pink-500 hover:cursor-pointer'>add products</h4>
 
                         </div>) : (
                         <div className='w-[70%] sm:w-[35%] flex flex-row  justify-center items-center'>

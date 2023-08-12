@@ -26,11 +26,12 @@ const RecoverPassword = () => {
         },
         validateOnBlur: false,
         validateOnChange: false,
-        onSubmit: async (values) => {
+        onSubmit: async (values, { resetForm }) => {
             handleForgotPassword(values.email)
             if (isLogged === true) {
                 setTimeout(() => {
                     navigate('/auth/')
+                    resetForm()
                 }, 1400);
             }
 
@@ -41,7 +42,7 @@ const RecoverPassword = () => {
     return (
         <div className='w-full h-full flex flex-col justify-center items-center'>
             <Toaster position='top-right' reverseOrder={false}></Toaster>
-            <Typography variant="h6" className="text-sm tracking-tighter font-semibold text-center"
+            <Typography variant="p" className="text-sm font-semibold text-center"
             >Recover your password using registration email</Typography>
             <form className='w-full flex flex-col justify-center items-center' onSubmit={formik.handleSubmit}>
                 <input type='text' placeholder='email' id="email"
@@ -54,6 +55,12 @@ const RecoverPassword = () => {
                 >
                     recover now
                 </button>
+                <div className='w-[80%] pt-5 flex flex-row justify-end'>
+                    <Typography variant="p"
+                        onClick={() => navigate("/auth/")}
+                        className="capitalize font-semibold text-blue-500 text-sm hover:text-pink-400 hover:underline"
+                    >login</Typography>
+                </div>
             </form>
 
 
