@@ -39,7 +39,7 @@ const Login = () => {
                 setTimeout(() => {
                     navigate('/')
                     resetForm()
-                }, 1500);
+                }, 1000);
             }
         }
     })

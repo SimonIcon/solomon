@@ -39,7 +39,7 @@ const AddProducts = () => {
                 error.description = toast.error("too short description")
             } else if (values.category === "" || !values.category) {
                 error.category = toast.error("product category required")
-            } else if (image.length === 0) {
+            } else if (image === null) {
                 error.image = toast.error("product image required")
             }
             return error;

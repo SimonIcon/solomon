@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp } from 'firebase/firestore'
 import React, { createContext, useEffect, useState } from 'react'
 import { db } from '../config/firebase'
 import { toast } from 'react-hot-toast'
@@ -45,9 +45,18 @@ const AdminContext = ({ children }) => {
         }
         getProducts()
     }, [products])
+    // deleting documents
+
+    const handleDelete = async (id) => {
+        await deleteDoc(doc(db, "products", id)).then(() => {
+            toast.success("product deleted successfully")
+        }).catch(() => {
+            toast.error("error occurred while deleting product")
+        })
+    }
 
     return (
-        <adminContext.Provider value={{ handleAddProduct, products }}>
+        <adminContext.Provider value={{ handleAddProduct, products, handleDelete }}>
             {children}
         </adminContext.Provider>
     )
