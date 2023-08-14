@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styles from "../styles/general.module.scss"
 import { useFormik } from "formik"
 import { storage, db } from "../config/firebase"
 import { Toaster, toast } from "react-hot-toast"
@@ -65,7 +64,9 @@ const AddProducts = () => {
                             title: values.title,
                             description: values.description,
                             category: values.category,
-                            productImage: downloadURL
+                            productImage: downloadURL,
+                            likes: 0,
+                            dislikes: 0
                         }).then(() => {
                             toast.success("product added successfully")
                             setTimeout(() => {
@@ -86,9 +87,9 @@ const AddProducts = () => {
     })
 
     return (
-        <div className={`${styles.addproducts} w-full pt-[80px] z-30`}>
+        <div className={` w-full h-[100vh] pt-[80px] z-30`}>
             <Toaster position='top-right' reverseOrder={false}></Toaster>
-            <div className='w-full flex justify-center'>
+            <div className='w-full h-full flex flex-col justify-center items-center'>
                 <div className='w-[80%] sm:w-[65%] md:w-[50%] h-full flex flex-col pt-2'>
                     <h4 className='capitalize text-center font-semibold text-sm font-Poppins'>add product</h4>
                     <form onSubmit={formik.handleSubmit}

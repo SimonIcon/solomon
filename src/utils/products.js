@@ -6,8 +6,16 @@ const signages = require('../assets/signages.png')
 const laserCut = require('../assets/laserCutPanel.png')
 const balcony = require('../assets/balcony.png')
 const fences = require("../assets/fence3.png")
+const all = require('../assets/logo.JPG')
 
 const productCategory = [
+    {
+        id: 199,
+        name: "all",
+        productImage: all,
+        value: "all",
+    },
+
     {
         id: 200,
         name: "doors",
@@ -40,7 +48,7 @@ const productCategory = [
     },
     {
         id: 205,
-        name: "laser cut panels",
+        name: "laserCutters",
         productImage: laserCut,
         value: "laserCut"
     },

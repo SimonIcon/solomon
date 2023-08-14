@@ -95,7 +95,7 @@ const HomeContext = ({ children }) => {
     // signing out user
     const handleLogout = () => {
         signOut(auth).then(() => {
-            toast.success('you have signed out')
+            toast.success('you have logged out')
             setIsLogged(false)
         }).catch((error) => {
             toast.error("error while loging out")

@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore'
 import React, { createContext, useEffect, useState } from 'react'
 import { db } from '../config/firebase'
 import { toast } from 'react-hot-toast'
@@ -7,22 +7,7 @@ import { toast } from 'react-hot-toast'
 // creating context
 export const adminContext = createContext({})
 const AdminContext = ({ children }) => {
-    // adding books
-    const handleAddProduct = async (title, description, category, productImage) => {
-        const productRef = await collection(db, "products")
-        const createdAt = serverTimestamp()
-        addDoc(productRef, {
-            title,
-            createdAt: createdAt,
-            description,
-            productImage,
-            category
-        }).then(() => {
-            toast.success("product added successfully")
-        }).catch(() => {
-            toast.error('failed to add product')
-        })
-    }
+
     // getting products
     const [products, setProducts] = useState([])
     useEffect(() => {
@@ -35,7 +20,6 @@ const AdminContext = ({ children }) => {
                     })
                     setProducts(fetchedProducts)
                 }
-
             }).catch((error) => {
                 toast.error("error while fetching products")
                 console.log(error)
@@ -55,11 +39,12 @@ const AdminContext = ({ children }) => {
         })
     }
     // getting products for given category
+    const [category, setCategory] = useState("all")
     const [filteredProducts, setFilteredProducts] = useState([])
-    const [activeCategory, setActiveCategory] = useState('')
+    // getting filtered products
     useEffect(() => {
         const getFilteredProducts = async () => {
-            const products = query(collection(db, "products"), where("category", "==", activeCategory));
+            const products = query(collection(db, "products"), where("category", "==", category));
             const querySnapshot = await getDocs(products);
             const result = [];
             querySnapshot.forEach((product) => {
@@ -69,11 +54,33 @@ const AdminContext = ({ children }) => {
             setFilteredProducts(result)
         }
         getFilteredProducts()
-    }, [activeCategory])
+    }, [category])
+    // handle likes
+    const HandleLike = async (id) => {
+        await getDoc(doc(db, "products", id)).then((doc) => {
+            updateDoc(doc.ref, {
+                likes: doc.data().likes + 1
+            })
+        }).catch(() => {
+            console.log("error while updating like section")
+        })
+    }
+    // handle dislikes
+    const handleDislikes = async (id) => {
+        await getDoc(doc(db, "products", id)).then((doc) => {
+            updateDoc(doc.ref, {
+                dislikes: doc.data().likes + 1
+            })
+        }).catch(() => {
+            console.log("error while updating like section")
+        })
+    }
+    // 
 
     return (
         <adminContext.Provider value={{
-            handleAddProduct, products, handleDelete, setActiveCategory, filteredProducts
+            HandleLike, handleDislikes, category, setCategory,
+            products, handleDelete, filteredProducts,
         }}>
             {children}
         </adminContext.Provider>
