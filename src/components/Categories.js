@@ -8,7 +8,7 @@ const Categories = () => {
     const { setCategory } = useContext(adminContext)
     const navigate = useNavigate()
     return (
-        <div className='w-full flex flex-col justify-center items-center pt-[130px]' name="categories">
+        <div className='w-full flex flex-col justify-center items-center pt-[90px] bg-[#0a192f] text-gray-100' name="categories">
             <h2 className='text-center capitalize py-1 text-xl font-semibold tracking-wider underline'>products categories</h2>
             <div className='w-[90%] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-6 items-center py-8'>
                 {

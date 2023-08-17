@@ -103,9 +103,18 @@ const AddProducts = () => {
                             />
                             <p>
                                 {
-                                    progress > 0 ? (
-                                        <h6 className='font-semibold text-sm capitalize'>uploading {progress}%</h6>
-                                    ) : null
+                                    progress > 1 && progress < 100 ? (
+                                        <h6
+                                            className='font-semibold text-sm capitalize'>uploading {progress}%</h6>
+                                    ) : (
+                                        <>
+                                            {
+                                                progress === 100 || progress > 100 ? (
+                                                    <h6 className="text-green-400 capitalize font-semibold">uploaded</h6>
+                                                ) : null
+                                            }
+                                        </>
+                                    )
                                 }
                             </p>
 

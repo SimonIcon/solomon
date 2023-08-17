@@ -56,8 +56,7 @@ const Navbar = () => {
 
                         <Link to="categories" className='capitalize font-semibold text-sm tracking-normal  hover:text-pink-500 hover:cursor-pointer'
                             spy={true} smooth={true} offset={50} duration={500}>category</Link>
-                        <Link to="services" className='capitalize font-semibold text-sm tracking-normal  hover:text-pink-500 hover:cursor-pointer'
-                            spy={true} smooth={true} offset={50} duration={500}>services</Link>
+
                         <Link to="footer" className='capitalize font-semibold text-sm tracking-normal  hover:text-pink-500 hover:cursor-pointer'
                             spy={true} smooth={true} offset={50} duration={500}>contacts</Link>
                     </div>
@@ -86,9 +85,6 @@ const Navbar = () => {
                                 <Link to="categories" onClick={handleClose}
                                     className='capitalize px-3 py-3  font-semibold text-sm tracking-normal  hover:text-pink-500 hover:cursor-pointer'
                                     spy={true} smooth={true} offset={50} duration={500}>categories</Link>
-                                <Link to="services" onClick={handleClose}
-                                    className='capitalize px-3 py-3  font-semibold text-sm tracking-normal  hover:text-pink-500 hover:cursor-pointer'
-                                    spy={true} smooth={true} offset={50} duration={500}>services</Link>
                                 <Link to="footer" onClick={handleClose}
                                     className='capitalize px-3 py-3  font-semibold text-sm tracking-normal  hover:text-pink-500 hover:cursor-pointer'
                                     spy={true} smooth={true} offset={50} duration={500}>contact us</Link>

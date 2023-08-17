@@ -4,7 +4,6 @@ import { Toaster } from 'react-hot-toast'
 import { Drawer, Paper, Typography } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ProductChat from '../components/ProductChat';
 
 const ProductsPage = () => {
@@ -24,12 +23,10 @@ const ProductsPage = () => {
     // handling chat drawer
     const [openChat, setOpenChat] = useState(false)
     const [activeChat, setActiveChat] = useState([])
-
-
     // rendering products conditionaly
     const itemsRendered = category !== "all" ? filteredProducts : products
     return (
-        <div className={`w-full pt-[100px] z-30 min-h-[100vh] relative`}>
+        <div className={`w-full pt-[100px] z-30 min-h-[100vh] bg-[#0a192f] text-gray-100 `}>
             <Toaster position='top-right' reverseOrder={false}></Toaster>
             <div className="w-full flex flex-col justify-start items-start">
                 <div className='w-[90%] sm:w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
@@ -43,16 +40,16 @@ const ProductsPage = () => {
                                             className='flex flex-col items-center justify-center h-[430px] mt-3'>
                                             <div className="w-[80%] sm:w-[70%] flex flex-col items-center">
                                                 <Typography variant='h6'
-                                                    className='font-semibold text-sm text-start px-1 capitalize'
+                                                    className='w-full font-semibold text-sm text-start px-1 capitalize'
                                                 >{product.title}</Typography>
                                                 <Typography variant="p"
-                                                    className='font-light  text-sm py-2'
+                                                    className='font-light text-sm py-2 indent-2 text-pink-500'
                                                 >{product.description}</Typography>
                                             </div>
                                             <img src={product.productImage} alt="product"
                                                 className='w-[80%]  sm:w-[70%] h-[250px] object-cover'
                                             />
-                                            <button className="w-[80%] sm:w-[70%] text-center py-3 rounded-md mt-3
+                                            <button className="w-[80%] text-black sm:w-[70%] text-center py-3 rounded-md mt-3
                                 bg-cyan-400 hover:bg-cyan-600 capitalize font-semibold text-xs">
                                                 place order
                                             </button>
@@ -60,14 +57,14 @@ const ProductsPage = () => {
                                                 <div onClick={() => {
                                                     HandleLike(product.id)
                                                 }}
-                                                    className="w-[30%] flex flex-row hover:cursor-pointer hover:bg-[#bdbdbd] justify-evenly items-center py-2 bg-[#eeeeee] rounded-2xl">
+                                                    className="w-[30%] text-black flex flex-row hover:cursor-pointer hover:bg-[#bdbdbd] justify-evenly items-center py-2 bg-[#eeeeee] rounded-2xl">
                                                     <FavoriteBorderIcon fontSize="10px" />
                                                     <Typography variant="p" className="font-semibold text-xs">{product.likes}</Typography>
                                                 </div>
                                                 <div onClick={() => {
                                                     handleDislikes(product.id)
                                                 }}
-                                                    className="w-[30%] flex flex-row hover:cursor-pointer hover:bg-[#bdbdbd] justify-evenly items-center py-2 bg-[#eeeeee] rounded-2xl">
+                                                    className="w-[30%] text-black flex flex-row hover:cursor-pointer hover:bg-[#bdbdbd] justify-evenly items-center py-2 bg-[#eeeeee] rounded-2xl">
                                                     <ThumbDownOffAltIcon fontSize="10px" />
                                                     <Typography variant="p" className="font-semibold text-xs">{product.dislikes}</Typography>
                                                 </div>
@@ -76,9 +73,8 @@ const ProductsPage = () => {
                                                     setActiveChat(product)
                                                     setOpenChat(true)
                                                 }}
-                                                    className='w-[30%] flex flex-row hover:cursor-pointer hover:bg-[#bdbdbd] justify-evenly items-center py-2 bg-[#eeeeee] rounded-2xl'>
-                                                    <ChatBubbleOutlineIcon fontSize="10px" />
-                                                    <Typography variant="p" className="font-semibold text-xs">{3}</Typography>
+                                                    className='w-[30%] text-black text-xs font-light capitalize flex flex-row hover:cursor-pointer hover:bg-[#bdbdbd] justify-evenly items-center py-2 bg-[#eeeeee] rounded-2xl'>
+                                                    comments
                                                 </div>
 
 

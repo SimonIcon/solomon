@@ -8,7 +8,8 @@ import styles from "../styles/general.module.scss"
 
 
 const ProductInfoPage = () => {
-    const { products, handleDelete, filteredProducts, setCategory, category } = useContext(adminContext)
+    const { products, handleDelete, filteredProducts, setCategory,
+        category } = useContext(adminContext)
     const renderedProducts = category === "all" ? products : filteredProducts
 
     // get the width of the browser
@@ -93,7 +94,12 @@ const ProductInfoPage = () => {
                                                     }}
                                                         className='w-[40%] py-2  text-center text-xs font-semibold capitalize
                                         rounded-md bg-cyan-300 hover:bg-cyan-600'
-                                                    >comments {3}</button>
+                                                    >comments
+                                                        {
+                                                            product.chats === undefined ? 0 : 7
+
+                                                        }
+                                                    </button>
 
                                                 </div>
                                             </div>

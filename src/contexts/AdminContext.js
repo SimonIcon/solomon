@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, serverTimestamp, updateDoc, where } from 'firebase/firestore'
 import React, { createContext, useEffect, useState } from 'react'
 import { db } from '../config/firebase'
 import { toast } from 'react-hot-toast'
@@ -11,25 +11,35 @@ const AdminContext = ({ children }) => {
     // getting products
     const [products, setProducts] = useState([])
     useEffect(() => {
-        const getProducts = async () => {
-            await getDocs(collection(db, "products")).then((querySnapshot) => {
-                if (!querySnapshot.empty) {
-                    const fetchedProducts = []
-                    querySnapshot.forEach((product) => {
-                        fetchedProducts.push({ id: product.id, ...product.data() })
-                    })
-                    setProducts(fetchedProducts)
+        const fetchedProducts = async () => {
+            const querySnapshot = await getDocs(collection(db, "products"));
+            if (querySnapshot.docs.length) {
+                if (querySnapshot.docs.length) {
+                    const fetchedProduct = [];
+                    for (const doc of querySnapshot.docs) {
+                        const productData = { id: doc.id, ...doc.data() };
+                        const messageRef = collection(doc.ref, "messages");
+                        const orderedMessages = query(messageRef, orderBy("createdAt"), limit(100));
+                        onSnapshot(orderedMessages, (snapshot) => {
+                            const fetchedChats = [];
+                            snapshot.forEach((chat) => {
+                                fetchedChats.push({ id: chat.id, ...chat.data() });
+                            });
+                            productData.chats = fetchedChats;
+                        })
+                        fetchedProduct.push(productData);
+                    }
+                    setProducts(fetchedProduct)
                 }
-            }).catch((error) => {
-                toast.error("error while fetching products")
-                console.log(error)
-            })
-
-
+            }
         }
-        getProducts()
+        fetchedProducts()
     }, [products])
-    // deleting documents
+
+
+
+
+    // end
 
     const handleDelete = async (id) => {
         await deleteDoc(doc(db, "products", id)).then(() => {
@@ -46,12 +56,24 @@ const AdminContext = ({ children }) => {
         const getFilteredProducts = async () => {
             const products = query(collection(db, "products"), where("category", "==", category));
             const querySnapshot = await getDocs(products);
-            const result = [];
-            querySnapshot.forEach((product) => {
-                result.push({ id: product.id, ...product.data() })
-
-            });
-            setFilteredProducts(result)
+            if (querySnapshot.docs.length) {
+                if (querySnapshot.docs.length) {
+                    const fetchedProduct = [];
+                    for (const doc of querySnapshot.docs) {
+                        const productData = { id: doc.id, ...doc.data() };
+                        const chatsCollection = await getDocs(collection(doc.ref, "messages"));
+                        if (chatsCollection.docs.length) {
+                            const fetchedChats = [];
+                            chatsCollection.forEach((chat) => {
+                                fetchedChats.push({ id: chat.id, ...chat.data() });
+                            });
+                            productData.chats = fetchedChats;
+                        }
+                        fetchedProduct.push(productData);
+                    }
+                    setFilteredProducts(fetchedProduct)
+                }
+            }
         }
         getFilteredProducts()
     }, [category])
@@ -75,12 +97,29 @@ const AdminContext = ({ children }) => {
             console.log("error while updating like section")
         })
     }
-    // 
+    //send message
+    const sendMessage = (message, name, customerId, activeChatId) => {
+        const productRef = doc(db, "products", activeChatId);
+        const messageRef = collection(productRef, "messages")
+        const createdAt = serverTimestamp()
+        addDoc(messageRef, {
+            message: message,
+            createdAt: createdAt,
+            sender: customerId,
+            senderName: name
+        }).then(() => {
+            toast.success("sent")
+        }).catch((error) => {
+            console.log(error)
+        })
+
+    }
+
 
     return (
         <adminContext.Provider value={{
             HandleLike, handleDislikes, category, setCategory,
-            products, handleDelete, filteredProducts,
+            products, handleDelete, filteredProducts, sendMessage
         }}>
             {children}
         </adminContext.Provider>

@@ -10,7 +10,6 @@ const Homepage = () => {
             <HomeContext>
                 <Dashboard />
                 <Categories />
-                <Services />
             </HomeContext>
         </div>
     )

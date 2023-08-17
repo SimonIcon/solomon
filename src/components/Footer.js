@@ -1,5 +1,4 @@
 import React, { useRef } from 'react'
-import { Typography } from '@mui/material';
 import { Link } from "react-scroll"
 import FacebookIcon from '@mui/icons-material/Facebook';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
@@ -46,10 +45,10 @@ const Footer = () => {
 
     return (
         <div name="footer"
-            className='w-full bg-[rgb(245,245,245)] flex flex-col z-50 absolute justify-center items-center pb-10'>
+            className='w-full bg-[#0a192f] text-gray-100 flex flex-col z-50 justify-center items-center pb-10'>
             <Toaster position='top-right' reverseOrder={false}></Toaster>
-            <div className='w-full md:w-[80%] sm:w-[70%] flex flex-col md:flex-row md:justify-between pt-4'>
-                <div className='w-full sm:w-full md:w-[45%] flex flex-col'>
+            <div className='w-[95%] md:w-[90%] sm:w-[70%] flex flex-col justify-center items-center md:flex-row md:justify-between pt-2'>
+                <div className='w-[80%] sm:w-[80%] md:w-[45%] flex flex-col'>
                     <form className='w-full flex flex-col justify-center items-center'
                         ref={form} onSubmit={sendEmail}
                     >
@@ -79,35 +78,37 @@ const Footer = () => {
 
                     </div>
                 </div>
-                <div className='w-full sm:w-full md:w-[45%] justify-center items-center'>
-                    {/* links */}
-                    <div className="w-full flex flex-row justify-between md:pt-5 md:pb-3 sm:py-5">
-                        <Link to="dashboard" className='capitalize font-semibold text-xs tracking-normal  hover:text-pink-500 hover:cursor-pointer'
-                            spy={true} smooth={true} offset={50} duration={500}>home</Link>
-                        <Link to="categories" className='capitalize font-semibold text-xs tracking-normal  hover:text-pink-500 hover:cursor-pointer'
+                <div className='w-full flex sm:w-full md:w-[45%] flex-col md:flex-row'>
+                    <div className="w-[90%] md:w-35%] flex flex-col pt-3 md:pt-1">
+                        <Link to="categories"
+                            className='capitalize py-3 md:py-1  text-center md:text-start font-semibold text-sm tracking-normal  hover:text-pink-500 hover:cursor-pointer'
                             spy={true} smooth={true} offset={50} duration={500}>categories</Link>
-                        <Link to="services" className='capitalize font-semibold text-xs tracking-normal  hover:text-pink-500 hover:cursor-pointer'
+                        <ul className='w-full flex flex-row px-3 flex-wrap md:flex-col md:py-1'>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>windows</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>doors</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>staircases</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>facades</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Signages</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>lacer cutter</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>balconies</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>fences</li>
+                        </ul>
+                    </div>
+                    <div className='w-[90%] md:w-[65%] flex flex-col pt-3 md:pt-1 pb-5'>
+                        <Link to="dashboard"
+                            className='capitalize py-2 text-center md:text-start font-semibold text-sm tracking-normal  hover:text-pink-500 hover:cursor-pointer'
                             spy={true} smooth={true} offset={50} duration={500}>services</Link>
-
+                        <ul className='w-full flex flex-row flex-wrap  text-start md:flex-col md:py-1'>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Sheet metal bending</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Pipe bending</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Sheet metal rolling</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Installation</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Laser cutting</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Signage</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Powder coating</li>
+                            <li className='font-semibold capitalize text-xs md:py-1 px-2'>Design services</li>
+                        </ul>
                     </div>
-                    {/* servces */}
-                    <div className='w-full flex flex-col mt-4'>
-                        <Typography variant="p"
-                            className="text-center capitalize font-semibold text-sm underline">Services</Typography>
-                        <div className=" w-full flex flex-row flex-wrap sm:py-3">
-                            <Typography variant='p' className='text-xs px-3 py-2 font-semibold capitalize'>installation</Typography>
-                            <Typography variant='p' className='text-xs px-3 py-2 font-semibold capitalize'>deliver</Typography>
-                            <Typography variant='p' className='text-xs px-3 py-2 font-semibold capitalize'>consultations</Typography>
-                            <Typography variant='p' className='text-xs px-3 py-2 font-semibold capitalize'>repairs</Typography>
-                            <Typography variant='p' className='text-xs px-3 py-2 font-semibold capitalize'>product demonstartion</Typography>
-                            <Typography variant='p' className='text-xs px-3 py-2 font-semibold capitalize'>project planning</Typography>
-                            <Typography variant='p' className='text-xs px-3 py-2 font-semibold capitalize'>wholesale</Typography>
-                        </div>
-                    </div>
-
-
-
-
                 </div>
             </div>
 
