@@ -1,10 +1,10 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import { Outlet } from "react-router-dom"
-import Footer from './components/Footer'
 import HomeContext from './contexts/HomeContext'
 import AdminContext from "./contexts/AdminContext"
 import styles from "./styles/general.module.scss"
+import FooterUpdate from './components/FooterUpdate'
 
 const App = () => {
     return (
@@ -13,7 +13,7 @@ const App = () => {
                 <HomeContext>
                     <Navbar />
                     <Outlet />
-                    <Footer />
+                    <FooterUpdate />
                 </HomeContext>
             </AdminContext>
         </div>

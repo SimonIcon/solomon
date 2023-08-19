@@ -1,9 +1,11 @@
 import React from 'react'
 import styles from "../styles/general.module.scss"
 import { Typography } from "@mui/material"
+import { useNavigate } from "react-router-dom"
 
 
 const Dashboard = () => {
+    const navigate = useNavigate()
     return (
         <div className={`${styles.dashboard} w-full`} name="dashboard">
             <div className='w-full flex flex-col h-full pl-[14px] sm:pl-[30px] md:pl-[50px] pt-[30px]'>
@@ -17,7 +19,7 @@ const Dashboard = () => {
                     </p>
                 </div>
                 <div className="flex flex-col w-[90%] md:flex-row-reverse md:justify-between">
-                    <div className='w-full  flex flex-row md:flex-row-reverse text-cyan-800'>
+                    <div className='w-full  flex flex-row md:flex-row-reverse text-white'>
                         <div className='w-[90%] md:w-[40%] flex flex-col md:justify-end'>
                             <h6 className='capitalize text-center text-xl font-Poppins font-bold tracking-normal py-2'>services</h6>
                             <div className='w-full flex flex-row  flex-wrap md:flex-col'>
@@ -35,7 +37,8 @@ const Dashboard = () => {
                     </div>
                     <div className="w-[70%] flex justify-center items-center md:w-[30%] 
                     md:flex-col md:justify-end md:items-end pt-5">
-                        <button className="w-full py-3 text-center font-semibold rounded-lg
+                        <button onClick={() => navigate('/products')}
+                            className="w-full py-3 text-center font-semibold rounded-lg
                         bg-pink-400 capitalize hover:bg-pink-700">our products</button>
 
                     </div>
