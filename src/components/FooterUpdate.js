@@ -14,6 +14,7 @@ const FooterUpdate = () => {
     const sendEmail = (e) => {
         e.preventDefault();
         // Access form values
+
         const formData = new FormData(form.current);
         const name = formData.get('user_name');
         const email = formData.get('user_email');
@@ -77,7 +78,7 @@ const FooterUpdate = () => {
                             <span className=' lowercase font-semibold text-xs tracking-wide'> 0715407398</span>
                         </Typography>
                     </div>
-                    <div className='w-[85%] py-2'>
+                    <div className='w-[70%] py-2 justify-center items-center'>
                         <Typography variant="p" className='text-gray-200 font-light tracking-wide'>
                             <span className='pr-2'>We are located at</span>
                             <span className="capitalize font-semibold text-cyan-400"> syokiman pacific crest park</span>

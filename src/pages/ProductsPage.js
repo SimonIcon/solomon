@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { adminContext } from '../contexts/AdminContext'
-import { Toaster } from 'react-hot-toast'
+import { Toaster, toast } from 'react-hot-toast'
 import { Drawer, Paper, Typography } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ProductChat from '../components/ProductChat';
+import { homeContext } from '../contexts/HomeContext';
+import emailjs from '@emailjs/browser';
 
 const ProductsPage = () => {
     const { products, filteredProducts, HandleLike, handleDislikes, category } = useContext(adminContext)
+    const { isLogged, activeMember } = useContext(homeContext)
     // get the width of the browser
     const [browserWidth, setBrowserWidth] = useState(window.innerWidth);
     useEffect(() => {
@@ -23,12 +26,38 @@ const ProductsPage = () => {
     // handling chat drawer
     const [openChat, setOpenChat] = useState(false)
     const [activeChat, setActiveChat] = useState([])
+    // handling place order
+    const handlePlaceOrder = (title) => {
+        if (isLogged === false) {
+            toast.error("login to place order")
+        } else {
+            const formData = new FormData();
+            formData.set('name', activeMember.name);
+            formData.set('email', activeMember.email);
+            formData.set('message', title);
+            var templateParams = {
+                user_name: formData.get('name'),
+                user_email: formData.get('email'),
+                message: formData.get('message')
+            };
+
+            emailjs.send(process.env.REACT_APP_SERVICE_ID,
+                process.env.REACT_APP_TEMPLATE_ID, templateParams,
+                process.env.REACT_APP_PUBLIC_KEY)
+                .then((result) => {
+                    toast.success("order placed")
+                }, (error) => {
+                    toast.error("error occurred")
+                });
+        }
+
+    }
     // rendering products conditionaly
     const itemsRendered = category !== "all" ? filteredProducts : products
     return (
-        <div className={`w-full pt-[100px] z-30 min-h-[100vh] bg-[#0a192f] text-gray-100 `}>
+        <div className="w-full pt-[110px] min-h-screen">
             <Toaster position='top-right' reverseOrder={false}></Toaster>
-            <div className="w-full flex flex-col justify-start items-start">
+            <div className="w-full h-full flex flex-col top-[120px]">
                 <div className='w-[90%] sm:w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
                 sm:gap-1  gap-3'>
                     {
@@ -40,16 +69,17 @@ const ProductsPage = () => {
                                             className='flex flex-col items-center justify-center h-[430px] mt-3'>
                                             <div className="w-[80%] sm:w-[70%] flex flex-col items-center">
                                                 <Typography variant='h6'
-                                                    className='w-full font-semibold text-sm text-start px-1 capitalize'
+                                                    className='w-full font-semibold text-sm text-start px-1 capitalize tracking-wide'
                                                 >{product.title}</Typography>
                                                 <Typography variant="p"
-                                                    className='font-light text-sm py-2 indent-2 text-pink-500'
+                                                    className='font-light text-sm py-2 tracking-tight text-[#0a192f]'
                                                 >{product.description}</Typography>
                                             </div>
                                             <img src={product.productImage} alt="product"
                                                 className='w-[80%]  sm:w-[70%] h-[250px] object-cover'
                                             />
-                                            <button className="w-[80%] text-black sm:w-[70%] text-center py-3 rounded-md mt-3
+                                            <button onClick={() => handlePlaceOrder(product.title)}
+                                                className="w-[80%] text-black sm:w-[70%] text-center py-3 rounded-md mt-3
                                 bg-cyan-400 hover:bg-cyan-600 capitalize font-semibold text-xs">
                                                 place order
                                             </button>
@@ -86,9 +116,8 @@ const ProductsPage = () => {
                                 }
 
                             </>) : (
-                            <div className='w-full h-full flex flex-col justify-center items-center'>
-                                <Typography variant="p"
-                                    className="font-semibold text-sm capitalize text-black"
+                            <div className='w-full h-full flex justify-center items-center'>
+                                <Typography variant="p" className="font-semibold text-sm capitalize text-black"
                                 >out of stock</Typography>
                             </div>
                         )
