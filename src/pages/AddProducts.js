@@ -21,7 +21,6 @@ const AddProducts = () => {
     const formik = useFormik({
         initialValues: {
             title: "",
-            description: "",
             category: ""
         },
         validateOnChange: false,
@@ -32,10 +31,6 @@ const AddProducts = () => {
                 error.title = toast.error("product title required")
             } else if (values.title.length < 10) {
                 error.title = toast.error("too short title")
-            } else if (values.description.length === 0 || !values.description) {
-                error.description = toast.error("product description required")
-            } else if (values.description.length < 20) {
-                error.description = toast.error("too short description")
             } else if (values.category === "" || !values.category) {
                 error.category = toast.error("product category required")
             } else if (image === null) {
@@ -62,7 +57,6 @@ const AddProducts = () => {
                         addDoc(productRef, {
                             uploadedOn: timestamp,
                             title: values.title,
-                            description: values.description,
                             category: values.category,
                             productImage: downloadURL,
                             likes: 0,
@@ -123,12 +117,7 @@ const AddProducts = () => {
                             onChange={formik.handleChange} placeholder='product title'
                             className='w-[80%] px-3 outline-none text-sm text-black py-3 rounded-lg mt-3 border-[1px] font-semibold'
                         />
-                        <textarea type="text" id='description' placeholder='type description'
-                            value={formik.values.description}
-                            onChange={formik.handleChange}
-                            className='w-[80%] px-3 outline-none text-sm text-black py-3 rounded-lg mt-3 border-[1px] font-semibold'
-                            rows={4}
-                        > </textarea>
+
                         <select value={formik.values.category} id='category'
                             className='w-[80%] px-3 outline-none text-sm text-black py-3 rounded-lg mt-3 border-[1px] font-semibold'
                             onChange={formik.handleChange}
